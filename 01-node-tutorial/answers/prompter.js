@@ -21,38 +21,42 @@ const getBody = (req, callback) => {
 };
 
 // here, you could declare one or more variables to store what comes back from the form.
-let item = "Enter something below.";
+let selectedColor = "white";
 
 // here, you can change the form below to modify the input fields and what is displayed.
 // This is just ordinary html with string interpolation.
 const form = () => {
   return `
-  <body>
-  <p>${item}</p>
+  <body style="background-color: ${selectedColor};">
+  <h1>Background Color Selection</h1>
   <form method="POST">
-  <input name="item"></input>
-  <button type="submit">Submit</button>
+    <label for="color">Choose a color:</label>
+    <select name="color">
+      <option value="white">White</option>
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+      <option value="green">Green</option>
+      <option value="yellow">Yellow</option>
+    </select>
+    <button type="submit">Update</button>
   </form>
   </body>
   `;
 };
 
 const server = http.createServer((req, res) => {
-  console.log("req.method is ", req.method);
-  console.log("req.url is ", req.url);
+  console.log("Request method:", req.method);
+  console.log("Request URL:", req.url);
+  
   if (req.method === "POST") {
     getBody(req, (body) => {
-      console.log("The body of the post is ", body);
-      // here, you can add your own logic
-      if (body["item"]) {
-        item = body["item"];
-      } else {
-        item = "Nothing was entered.";
+      console.log("Received form data:", body);
+      
+      if (body["color"]) {
+        selectedColor = body["color"];
       }
-      // Your code changes would end here
-      res.writeHead(303, {
-        Location: "/",
-      });
+      
+      res.writeHead(303, { Location: "/" });
       res.end();
     });
   } else {
@@ -61,4 +65,4 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(3000);
-console.log("The server is listening on port 3000.");
+console.log("Server is running on port 3000. Visit http://localhost:3000 to access.");
