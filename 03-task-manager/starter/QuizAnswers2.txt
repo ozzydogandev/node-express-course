@@ -1,0 +1,6 @@
+1. We created asyncWrapper to catch and forward errors from async controller functions without repeating try/catch everywhere.
+
+2.
+if (!task) {
+  return next(new CustomAPIError(`No task with id: ${taskID}`, 404));
+}
